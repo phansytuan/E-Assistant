@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Executive Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f11;
+      --bg2: #161618;
+      --bg3: #1e1e21;
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.14);
+      --text: #f0f0f0;
+      --muted: #888;
+      --accent: #5b8df6;
+      --accent2: #3d6de0;
+      --success: #3ecf8e;
+      --warn: #f5a623;
+      --danger: #e05252;
+      --font: 'DM Sans', sans-serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+    }
+
+    .sidebar-logo {
+      padding: 0 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .logo-mark {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 500; color: #fff;
+      flex-shrink: 0;
+    }
+
+    .logo-text { font-size: 13px; font-weight: 500; }
+    .logo-sub  { font-size: 11px; color: var(--muted); }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 20px;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 13px;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .nav-item:hover { color: var(--text); background: var(--bg3); }
+    .nav-item.active { color: var(--text); border-left-color: var(--accent); background: rgba(91,141,246,0.08); }
+
+    .nav-icon { font-size: 15px; width: 18px; text-align: center; }
+
+    .sidebar-section { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 16px 20px 6px; }
+
+    .integration-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 20px; font-size: 12px; color: var(--muted);
+    }
+    .int-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+    .int-dot.off { background: var(--muted); }
+
+    .sidebar-bottom { margin-top: auto; padding: 16px 20px 0; border-top: 1px solid var(--border); }
+    .model-badge {
+      font-family: var(--mono);
+      font-size: 10px; color: var(--muted);
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: 4px 8px; border-radius: 4px;
+    }
+
+    /* Main */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg2);
+    }
+
+    .topbar h1 { font-size: 15px; font-weight: 500; }
+    .topbar-sub { font-size: 12px; color: var(--muted); margin-left: auto; font-family: var(--mono); }
+
+    /* Chat */
+    .chat { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+
+    .msg { display: flex; gap: 10px; align-items: flex-start; animation: fadeUp 0.2s ease; }
+    .msg.user { flex-direction: row-reverse; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-av {
+      width: 30px; height: 30px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 500; flex-shrink: 0; margin-top: 2px;
+    }
+    .msg-av.ea { background: var(--accent); color: #fff; }
+    .msg-av.you { background: var(--bg3); border: 1px solid var(--border2); color: var(--muted); }
+
+    .bubble {
+      max-width: 68%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+    .bubble.ea {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px 12px 12px 12px;
+      color: var(--text);
+    }
+    .bubble.you {
+      background: var(--accent2);
+      color: #fff;
+      border-radius: 12px 4px 12px 12px;
+    }
+
+    .tool-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--mono); font-size: 10px;
+      background: rgba(91,141,246,0.12);
+      border: 1px solid rgba(91,141,246,0.25);
+      color: var(--accent);
+      padding: 3px 8px; border-radius: 4px;
+      margin-top: 6px;
+    }
+    .tool-pill .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--success); }
+
+    .typing-dots { display: flex; gap: 4px; padding: 4px 2px; }
+    .typing-dots span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--muted);
+      animation: blink 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink { 0%,60%,100%{opacity:0.3} 30%{opacity:1} }
+
+    /* Chips */
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 24px 12px; }
+    .chip {
+      padding: 6px 14px; border-radius: 20px; font-size: 12px;
+      border: 1px solid var(--border2); background: var(--bg2);
+      color: var(--muted); cursor: pointer; transition: all 0.15s;
+    }
+    .chip:hover { background: var(--bg3); color: var(--text); border-color: var(--accent); }
+
+    /* Input */
+    .input-bar {
+      display: flex; gap: 10px; padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .input-bar input {
+      flex: 1; padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border2);
+      background: var(--bg3);
+      color: var(--text);
+      font-family: var(--font); font-size: 13.5px;
+      outline: none; transition: border-color 0.15s;
+    }
+    .input-bar input::placeholder { color: var(--muted); }
+    .input-bar input:focus { border-color: var(--accent); }
+
+    .send-btn {
+      padding: 10px 18px; border-radius: 8px;
+      background: var(--accent); color: #fff;
+      border: none; cursor: pointer; font-family: var(--font);
+      font-size: 13px; font-weight: 500; transition: background 0.15s;
+    }
+    .send-btn:hover { background: var(--accent2); }
+    .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">EA</div>
+    <div>
+      <div class="logo-text">Executive Assistant</div>
+      <div class="logo-sub">Powered by Claude</div>
+    </div>
+  </div>
+
+  <div class="nav-item active" onclick="setView('chat')">
+    <span class="nav-icon">💬</span> Chat
+  </div>
+  <div class="nav-item" onclick="setView('tasks')">
+    <span class="nav-icon">✓</span> Tasks
+  </div>
+  <div class="nav-item" onclick="setView('calendar')">
+    <span class="nav-icon">📅</span> Calendar
+  </div>
+
+  <div class="sidebar-section">Integrations</div>
+  <div class="integration-item"><div class="int-dot" id="dot-cal"></div> Google Calendar</div>
+  <div class="integration-item"><div class="int-dot" id="dot-gmail"></div> Gmail</div>
+  <div class="integration-item"><div class="int-dot" id="dot-drive"></div> Google Drive</div>
+
+  <div class="sidebar-bottom">
+    <div class="model-badge">claude-sonnet-4</div>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="topbar">
+    <h1 id="view-title">Chat</h1>
+    <span class="topbar-sub" id="topbar-date"></span>
+  </div>
+
+  <div class="chat" id="chat"></div>
+
+  <div class="chips" id="chips">
+    <div class="chip" onclick="sendChip('What does my day look like?')">What's my day?</div>
+    <div class="chip" onclick="sendChip('Show my upcoming tasks')">My tasks</div>
+    <div class="chip" onclick="sendChip('Any important emails I should know about?')">Check emails</div>
+    <div class="chip" onclick="sendChip('Find my latest document in Drive')">Search Drive</div>
+    <div class="chip" onclick="sendChip('Schedule a 30-minute focus block tomorrow morning')">Block focus time</div>
+  </div>
+
+  <div class="input-bar">
+    <input id="inp" placeholder="Ask your assistant anything…" onkeydown="if(event.key==='Enter'&&!event.shiftKey)send()" />
+    <button class="send-btn" id="send-btn" onclick="send()">Send</button>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
