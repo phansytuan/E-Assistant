@@ -2,8 +2,6 @@
 
 An AI-powered Executive Assistant and optional Google integrations (Calendar, Gmail, Drive). Runs entirely on your local machine.
 
-![screenshot](https://placeholder/screenshot.png)
-
 ---
 
 ## Features
